@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: "14.x"
 
-      - uses: actions/cache@v2.1.7
+      - uses: actions/cache@v2.1.8
         with:
           path: .yarn/cache
           key: app-yarn-${{ hashFiles('yarn.lock') }}
