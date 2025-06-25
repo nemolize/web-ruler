@@ -1,15 +1,16 @@
-import { shallow } from "enzyme";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { TodoList } from "./todo-list";
 
 const dummyTodos = [{ id: 1, name: "dummyTodo", done: false }];
 
 describe("TodoList", () => {
-  let wrapper;
   const onToggleSpy = jest.fn();
   const onClickRemoveSpy = jest.fn();
 
   beforeEach(() => {
-    wrapper = shallow(
+    onToggleSpy.mockClear();
+    onClickRemoveSpy.mockClear();
+    render(
       <TodoList
         todos={dummyTodos}
         onToggle={onToggleSpy}
@@ -17,19 +18,24 @@ describe("TodoList", () => {
       />,
     );
   });
-  test("should render", () => expect(wrapper.exists()).toBeTruthy());
+
+  test("should render", () => {
+    expect(screen.getByRole("table")).toBeInTheDocument();
+  });
 
   test("should render todos", () => {
-    expect(wrapper.find("table tbody tr").text()).toContain("dummyTodo");
+    expect(screen.getByText("dummyTodo")).toBeInTheDocument();
   });
 
   test("should call onToggle by clicking checkbox", () => {
-    wrapper.find(`input[type='checkbox']`).simulate("change");
+    const checkbox = screen.getByRole("checkbox");
+    fireEvent.click(checkbox);
     expect(onToggleSpy).toHaveBeenCalledWith(1);
   });
 
   test("should call onClickRemove by clicking remove", () => {
-    wrapper.find("button").simulate("click");
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
     expect(onClickRemoveSpy).toHaveBeenCalledWith(dummyTodos[0]);
   });
 });

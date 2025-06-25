@@ -1,10 +1,26 @@
 const TEST_REGEX = "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$";
 
 module.exports = {
-  setupFiles: ["<rootDir>/jest.setup.js"],
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testRegex: TEST_REGEX,
   transform: {
-    "^.+\\.[jt]sx?$": "babel-jest",
+    "^.+\\.[jt]sx?$": [
+      "@swc/jest",
+      {
+        jsc: {
+          parser: {
+            syntax: "typescript",
+            tsx: true,
+          },
+          transform: {
+            react: {
+              runtime: "automatic",
+            },
+          },
+        },
+      },
+    ],
   },
   testPathIgnorePatterns: [
     "<rootDir>/.next/",

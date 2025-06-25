@@ -1,23 +1,28 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { TodoAdd } from "./todo-add";
 
 describe("TodoAdd", () => {
-  let wrapper;
   const onAddSpy = jest.fn();
 
   beforeEach(() => {
-    wrapper = shallow(<TodoAdd onAdd={onAddSpy} />);
+    onAddSpy.mockClear();
+    render(<TodoAdd onAdd={onAddSpy} />);
   });
 
   test("should disable button if input field is empty", () => {
-    expect(wrapper.find("button").is("[disabled]")).toBeTruthy();
+    const button = screen.getByRole("button");
+    expect(button).toBeDisabled();
   });
 
-  test("should call onRenderSpy on click add button", () => {
-    wrapper
-      .find("input")
-      .simulate("change", { target: { value: "dummy name" } });
-    wrapper.find("form").simulate("submit", new MouseEvent("click"));
-    expect(onAddSpy).toBeCalledWith("dummy name");
+  test("should call onAdd on form submit", async () => {
+    const user = userEvent.setup();
+    const input = screen.getByRole("textbox");
+    const button = screen.getByRole("button");
+
+    await user.type(input, "dummy name");
+    await user.click(button);
+
+    expect(onAddSpy).toHaveBeenCalledWith("dummy name");
   });
 });
