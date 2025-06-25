@@ -5,6 +5,7 @@
     "test": "jest --coverage",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
+    "typecheck": "tsc --noEmit",
     "build": "next build"
   },
   "dependencies": {
@@ -30,7 +31,8 @@
     "jest-environment-jsdom": "^30.0.2",
     "jsdom": "^26.1.0",
     "netlify-cli": "9.16.7",
-    "react-test-renderer": "18.2.0"
+    "react-test-renderer": "18.2.0",
+    "typescript": "^5.8.3"
   },
   "packageManager": "pnpm@10.12.1",
   "nextBundleAnalysis": {

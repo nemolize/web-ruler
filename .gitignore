@@ -19,6 +19,9 @@ pnpm-debug.log*
 .idea
 out
 
+# typescript
+*.tsbuildinfo
+
 # Local Netlify folder
 .netlify
 
