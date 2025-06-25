@@ -1,8 +1,10 @@
+import type { Config } from "jest";
+
 const TEST_REGEX = "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$";
 
-module.exports = {
+const config: Config = {
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testRegex: TEST_REGEX,
   transform: {
     "^.+\\.[jt]sx?$": [
@@ -30,3 +32,5 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   collectCoverage: true,
 };
+
+export default config;
