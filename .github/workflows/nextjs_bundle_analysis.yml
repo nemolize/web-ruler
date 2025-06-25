@@ -21,14 +21,15 @@ jobs:
       - name: Set up tools with mise
         uses: jdx/mise-action@v2
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/cache@v4
         with:
-          path: .yarn/cache
-          key: app-yarn-${{ hashFiles('yarn.lock') }}
+          path: ~/.pnpm-store
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            app-yarn-${{ hashFiles('yarn.lock') }}
-            app-yarn-
-      - run: yarn
+            pnpm-
+      - run: pnpm install --frozen-lockfile
 
       - name: Restore next build
         uses: actions/cache@v4

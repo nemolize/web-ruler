@@ -35,11 +35,11 @@ git clone git@github.com:nemolize/next-todo.git && cd next-todo
 
 ```bash
 # install dependencies
-$ yarn
+$ pnpm install
 
 # serve with hot reload at localhost:3000
-$ yarn dev
+$ pnpm dev
 
 # generate static project
-$ yarn build
+$ pnpm build
 ```

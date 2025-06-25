@@ -33,13 +33,13 @@ git clone git@github.com:nemolize/next-todo.git && cd next-todo
 
 ```bash
 # 依存関係のインストール
-$ yarn
+$ pnpm install
 
 # localhost:3000 で起動
-$ yarn dev
+$ pnpm dev
 
 # ビルドして静的ファイルにエクスポート
-$ yarn build
+$ pnpm build
 ```
 
 ## デプロイ

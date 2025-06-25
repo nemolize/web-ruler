@@ -34,7 +34,7 @@
     "react-addons-test-utils": "15.6.2",
     "react-test-renderer": "18.2.0"
   },
-  "packageManager": "yarn@3.1.1",
+  "packageManager": "pnpm@10.12.1",
   "nextBundleAnalysis": {
     "budget": null,
     "budgetPercentIncreaseRed": 20,
