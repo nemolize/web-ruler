@@ -11,11 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - id: nodenv
-        uses: nodenv/actions/node-version@v2
-      - uses: actions/setup-node@v2.5.1
-        with:
-          node-version: ${{ steps.nodenv.outputs.node-version }}
+      - uses: jdx/mise-action@v2
 
       - uses: actions/cache@v2.1.8
         with:
