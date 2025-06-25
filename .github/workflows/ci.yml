@@ -1,4 +1,4 @@
-name: draft
+name: CI
 
 on:
   push:
