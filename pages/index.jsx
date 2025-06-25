@@ -1,75 +1,81 @@
-import React, { Component, createRef } from 'react'
-import { Head } from '../components/head'
-import { TodoList } from '../components/todo-list'
-import { DeleteModal } from '../components/delete-modal'
-import { TodoAdd } from '../components/todo-add'
+import { Component, createRef } from "react";
+import { DeleteModal } from "../components/delete-modal";
+import { Head } from "../components/head";
+import { TodoAdd } from "../components/todo-add";
+import { TodoList } from "../components/todo-list";
 
-export const STORAGE_KEY = 'todos'
+export const STORAGE_KEY = "todos";
 export const INITIAL_STATE = {
   list: [
-    { id: 1, done: true, name: 'Buy a milk for my boss' },
-    { id: 2, done: false, name: 'Send a mail to a client' },
+    { id: 1, done: true, name: "Buy a milk for my boss" },
+    { id: 2, done: false, name: "Send a mail to a client" },
   ],
   counter: 3,
-}
+};
 
 class IndexPage extends Component {
   constructor(props) {
-    super(props)
-    this.deleteModalRef = createRef()
+    super(props);
+    this.deleteModalRef = createRef();
   }
 
   componentDidMount() {
-    this.setState(() => this.initialState)
+    this.setState(() => this.initialState);
   }
 
   get initialState() {
-    return this.localStorage || INITIAL_STATE
+    return this.localStorage || INITIAL_STATE;
   }
 
   get localStorage() {
-    const jsonString = localStorage.getItem(STORAGE_KEY)
-    return jsonString ? JSON.parse(jsonString) : null
+    const jsonString = localStorage.getItem(STORAGE_KEY);
+    return jsonString ? JSON.parse(jsonString) : null;
   }
 
   set localStorage(state) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
 
-  add = name => {
+  add = (name) => {
     this.setState(
-      state => ({
+      (state) => ({
         ...state,
         list: state.list.concat({ id: state.counter, name, done: false }),
         counter: state.counter + 1,
       }),
-      () => (this.localStorage = this.state)
-    )
-  }
+      () => {
+        this.localStorage = this.state;
+      },
+    );
+  };
 
-  remove = todo => {
+  remove = (todo) => {
     this.setState(
-      state => ({
+      (state) => ({
         ...state,
         list: state.list.filter(({ id }) => id !== todo.id),
       }),
-      () => (this.localStorage = this.state)
-    )
-  }
+      () => {
+        this.localStorage = this.state;
+      },
+    );
+  };
 
-  toggle = id => {
-    const newList = [...this.state.list]
-    const target = newList.find(todo => todo.id === id)
-    if (target) target.done = !target.done
+  toggle = (id) => {
+    const newList = [...this.state.list];
+    const target = newList.find((todo) => todo.id === id);
+    if (target) target.done = !target.done;
     this.setState(
-      state => ({ ...state, list: newList }),
-      () => (this.localStorage = this.state)
-    )
-  }
+      (state) => ({ ...state, list: newList }),
+      () => {
+        this.localStorage = this.state;
+      },
+    );
+  };
 
-  showModal = todo => {
-    this.deleteModalRef.current.show(todo)
-  }
+  showModal = (todo) => {
+    this.deleteModalRef.current.show(todo);
+  };
 
   render = () => (
     <>
@@ -101,7 +107,7 @@ class IndexPage extends Component {
         </>
       )}
     </>
-  )
+  );
 }
 
-export default IndexPage
+export default IndexPage;

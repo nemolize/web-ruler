@@ -1,14 +1,14 @@
-import { func } from 'prop-types'
-import React, { forwardRef, useState } from 'react'
+import { func } from "prop-types";
+import { forwardRef, useState } from "react";
 
 export const DeleteModal = forwardRef(({ onRemove }, ref) => {
-  const [removeTarget, setRemoveTarget] = useState(null)
-  const clear = () => setRemoveTarget(null)
+  const [removeTarget, setRemoveTarget] = useState(null);
+  const clear = () => setRemoveTarget(null);
   const remove = () => {
-    onRemove(removeTarget)
-    setRemoveTarget(null)
-  }
-  ref.current = { show: setRemoveTarget }
+    onRemove(removeTarget);
+    setRemoveTarget(null);
+  };
+  ref.current = { show: setRemoveTarget };
 
   return (
     <>
@@ -18,7 +18,12 @@ export const DeleteModal = forwardRef(({ onRemove }, ref) => {
           <div className="modal-card">
             <header className="modal-card-head">
               <p className="modal-card-title">Deleting an item</p>
-              <button onClick={clear} className="delete" aria-label="close" />
+              <button
+                type="button"
+                onClick={clear}
+                className="delete"
+                aria-label="close"
+              />
             </header>
             <section className="modal-card-body">
               <div className="content">
@@ -30,12 +35,13 @@ export const DeleteModal = forwardRef(({ onRemove }, ref) => {
             </section>
             <footer className="modal-card-foot is-justified-end">
               <button
+                type="button"
                 onClick={remove}
                 className="button is-danger is-pulled-right"
               >
                 Delete
               </button>
-              <button onClick={clear} className="button">
+              <button type="button" onClick={clear} className="button">
                 Cancel
               </button>
             </footer>
@@ -43,10 +49,10 @@ export const DeleteModal = forwardRef(({ onRemove }, ref) => {
         </div>
       )}
     </>
-  )
-})
+  );
+});
 
 DeleteModal.propTypes = {
   onRemove: func,
-}
-DeleteModal.displayName = 'DeleteModal'
+};
+DeleteModal.displayName = "DeleteModal";

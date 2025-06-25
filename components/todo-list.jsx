@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { array, func } from 'prop-types'
+import { array, func } from "prop-types";
+import { Component } from "react";
 
 export class TodoList extends Component {
   render() {
-    let { todos, onToggle, onClickRemove } = this.props
+    const { todos, onToggle, onClickRemove } = this.props;
     return (
       <>
         <table className="table is-fullwidth is-striped is-hoverable">
@@ -15,7 +15,7 @@ export class TodoList extends Component {
             </tr>
           </thead>
           <tbody>
-            {todos.map(todo => (
+            {todos.map((todo) => (
               <tr key={todo.id}>
                 <td className="has-text-centered">
                   <label className="checkbox">
@@ -29,6 +29,7 @@ export class TodoList extends Component {
                 <td>{todo.name}</td>
                 <td>
                   <button
+                    type="button"
                     onClick={() => onClickRemove(todo)}
                     className="button is-danger"
                   >
@@ -43,11 +44,11 @@ export class TodoList extends Component {
           </tbody>
         </table>
       </>
-    )
+    );
   }
 }
 TodoList.propTypes = {
   todos: array,
   onToggle: func,
   onClickRemove: func,
-}
+};

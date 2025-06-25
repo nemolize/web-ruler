@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { func } from 'prop-types'
+import { func } from "prop-types";
+import { useState } from "react";
 
-export const TodoAdd = props => {
-  const [name, setName] = useState('')
-  const onSubmit = e => {
-    e.preventDefault()
-    props.onAdd(name)
-    setName('')
-  }
+export const TodoAdd = (props) => {
+  const [name, setName] = useState("");
+  const onSubmit = (e) => {
+    e.preventDefault();
+    props.onAdd(name);
+    setName("");
+  };
 
   return (
     <form onSubmit={onSubmit} className="field has-addons">
@@ -17,14 +17,14 @@ export const TodoAdd = props => {
           type="text"
           placeholder="Name"
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
         <span className="icon is-small is-left">
           <i className="fas fa-pen" />
         </span>
       </div>
       <div className="control">
-        <button disabled={!name} className="button is-primary">
+        <button type="submit" disabled={!name} className="button is-primary">
           <span className="icon is-small">
             <i className="fas fa-check" />
           </span>
@@ -32,7 +32,7 @@ export const TodoAdd = props => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-TodoAdd.propTypes = { onAdd: func }
+TodoAdd.propTypes = { onAdd: func };
