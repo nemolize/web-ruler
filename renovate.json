@@ -1,7 +1,9 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    ":preserveSemverRanges"
+    "config:recommended"
   ],
-  "dependencyDashboard": false
+  "configMigration": true,
+  "timezone": "Asia/Tokyo",
+  "automerge": true
 }
