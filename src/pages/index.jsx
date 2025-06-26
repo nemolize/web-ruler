@@ -104,8 +104,7 @@ class IndexPage extends Component {
             <div className="hero-body">
               <div className="container">
                 <h1 className="title">
-                  <i className="fa fa-clipboard-list" />
-                  <span className="pl-1">next-todo</span>
+                  <span>📋 next-todo</span>
                 </h1>
                 <h2 className="subtitle">
                   A todo list manager made with Next.js
