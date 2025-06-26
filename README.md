@@ -22,7 +22,7 @@ https://next-todo.netlify.com
 - **Framework**: [Next.js](https://nextjs.org/)
 - **UI Library**: [React](https://reactjs.org/) with Hooks
 - **Styling**: Custom CSS with SCSS
-- **Type Safety**: [PropTypes](https://www.npmjs.com/package/prop-types) for runtime type checking
+- **Type Safety**: TypeScript for static type checking
 - **Code Quality**: [Biome](https://biomejs.dev/) for linting and formatting
 - **Testing**: [Jest](https://jestjs.io/) with [Enzyme](https://enzymejs.github.io/enzyme/) for component testing
 - **Package Manager**: [pnpm](https://pnpm.io/)
