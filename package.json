@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "14.2.18",
@@ -17,9 +18,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.5",
+    "@playwright/test": "^1.53.1",
     "@types/node": "^20.17.10",
     "@types/react": "^18.3.17",
     "@types/react-dom": "^18.3.5",
+    "playwright": "^1.53.1",
     "typescript": "^5.7.2"
   }
 }
