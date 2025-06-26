@@ -20,7 +20,12 @@ class IndexPage extends Component {
   }
 
   componentDidMount() {
-    this.setState(() => this.initialState);
+    try {
+      this.setState(() => this.initialState);
+    } catch (error) {
+      console.error('Error in componentDidMount:', error);
+      this.setState(() => INITIAL_STATE);
+    }
   }
 
   get initialState() {
@@ -28,12 +33,25 @@ class IndexPage extends Component {
   }
 
   get localStorage() {
-    const jsonString = localStorage.getItem(STORAGE_KEY);
-    return jsonString ? JSON.parse(jsonString) : null;
+    try {
+      if (typeof window !== 'undefined') {
+        const jsonString = localStorage.getItem(STORAGE_KEY);
+        return jsonString ? JSON.parse(jsonString) : null;
+      }
+    } catch (error) {
+      console.error('Error accessing localStorage:', error);
+    }
+    return null;
   }
 
   set localStorage(state) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+    } catch (error) {
+      console.error('Error setting localStorage:', error);
+    }
   }
 
   add = (name) => {
