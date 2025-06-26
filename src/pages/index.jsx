@@ -23,7 +23,7 @@ class IndexPage extends Component {
     try {
       this.setState(() => this.initialState);
     } catch (error) {
-      console.error('Error in componentDidMount:', error);
+      console.error("Error in componentDidMount:", error);
       this.setState(() => INITIAL_STATE);
     }
   }
@@ -34,23 +34,23 @@ class IndexPage extends Component {
 
   get localStorage() {
     try {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const jsonString = localStorage.getItem(STORAGE_KEY);
         return jsonString ? JSON.parse(jsonString) : null;
       }
     } catch (error) {
-      console.error('Error accessing localStorage:', error);
+      console.error("Error accessing localStorage:", error);
     }
     return null;
   }
 
   set localStorage(state) {
     try {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       }
     } catch (error) {
-      console.error('Error setting localStorage:', error);
+      console.error("Error setting localStorage:", error);
     }
   }
 
