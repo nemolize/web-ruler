@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   Lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +17,7 @@ jobs:
       - run: pnpm lint
 
   TypeCheck:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
       - run: pnpm typecheck
 
   E2ETests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
