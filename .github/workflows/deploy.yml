@@ -21,8 +21,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - uses: actions/configure-pages@v4
-        with:
-          static_site_generator: next
       - run: pnpm build
       - uses: actions/upload-pages-artifact@v3
         with:
