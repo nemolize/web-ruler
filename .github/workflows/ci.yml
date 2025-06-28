@@ -7,7 +7,7 @@ on:
       - '!master'
 
 jobs:
-  check:
+  Lint:
     runs-on: ubuntu-18.04
 
     steps:
@@ -23,14 +23,23 @@ jobs:
           restore-keys: |
             pnpm-
       - run: pnpm install --frozen-lockfile
-
       - run: pnpm lint
-      - run: pnpm test
-      - run: pnpm build
-      - uses: nwtgck/actions-netlify@v1.2.3
+
+  E2ETests:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jdx/mise-action@v2
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/cache@v4
         with:
-          publish-dir: './out'
-          production-branch: master
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          path: ~/.pnpm-store
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-
+      - run: pnpm install --frozen-lockfile
+      - run: npx playwright install chromium
+      - run: pnpm test:e2e
