@@ -4,9 +4,6 @@ description: 'Setup Node.js environment, pnpm, cache, and install dependencies'
 runs:
   using: 'composite'
   steps:
-    - uses: actions/checkout@v2
-      shell: bash
-
     - uses: jdx/mise-action@v2
       shell: bash
 
