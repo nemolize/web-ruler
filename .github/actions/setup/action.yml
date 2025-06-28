@@ -1,0 +1,17 @@
+name: 'Setup Node.js and Dependencies'
+description: 'Setup Node.js environment, pnpm, cache, and install dependencies'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v2
+      shell: bash
+
+    - uses: jdx/mise-action@v2
+      shell: bash
+
+    - uses: pnpm/action-setup@v4
+      shell: bash
+
+    - run: pnpm install --frozen-lockfile
+      shell: bash
