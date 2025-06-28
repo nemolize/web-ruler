@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const nextConfig = {
+export default {
   reactStrictMode: true,
   output: "export",
   trailingSlash: true,
@@ -8,5 +8,3 @@ const nextConfig = {
     unoptimized: true,
   },
 } satisfies NextConfig;
-
-export default nextConfig;
