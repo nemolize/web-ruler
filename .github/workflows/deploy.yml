@@ -23,7 +23,7 @@ jobs:
       - uses: actions/configure-pages@v4
         with:
           static_site_generator: next
-      - run: pnpm build
+      - run: pnpm build && ls -la
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
