@@ -5,10 +5,6 @@ runs:
   using: 'composite'
   steps:
     - uses: jdx/mise-action@v2
-      shell: bash
-
     - uses: pnpm/action-setup@v4
-      shell: bash
-
     - run: pnpm install --frozen-lockfile
       shell: bash
