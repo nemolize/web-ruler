@@ -22,8 +22,8 @@
     "@biomejs/biome": "^2.0.5",
     "@playwright/test": "^1.53.1",
     "@types/node": "^20.17.10",
-    "@types/react": "^18.3.17",
-    "@types/react-dom": "^18.3.5",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
     "playwright": "^1.53.1",
     "typescript": "^5.7.2"
   }
