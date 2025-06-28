@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
-export default {
-  reactStrictMode: true,
+const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
   images: {
     unoptimized: true,
   },
-} satisfies NextConfig;
+};
+
+export default nextConfig;
