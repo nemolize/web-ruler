@@ -46,7 +46,9 @@ export const useDisplayMetrics = (): DisplayMetrics | null => {
 
       const logicalDPI = pixelsPerInch;
       const physicalDPI = logicalDPI * devicePixelRatio;
-      const zoomLevel = window.devicePixelRatio * 100; // Better zoom detection
+      
+      // Better zoom detection using window dimensions
+      const zoomLevel = Math.round((window.outerWidth / window.screen.width) * 100);
 
       return {
         devicePixelRatio,
