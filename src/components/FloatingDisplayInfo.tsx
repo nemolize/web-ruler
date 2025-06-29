@@ -71,13 +71,7 @@ export const FloatingDisplayInfo = () => {
   return (
     <>
       {/* Floating Button */}
-      <div
-        style={{
-          position: "fixed",
-          top: 24,
-          left: 24,
-        }}
-      >
+      <div className="fixed top-6 left-6">
         <Button
           variant="filled"
           size="sm"
@@ -112,7 +106,7 @@ export const FloatingDisplayInfo = () => {
           </Group>
 
           {/* Key Metrics */}
-          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+          <div className="flex gap-4 flex-wrap">
             <MetricCard
               title="Resolution"
               value={`${metrics.pixelsPerCm}`}
@@ -140,13 +134,7 @@ export const FloatingDisplayInfo = () => {
                 Display Metrics
               </Text>
             </Group>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: "16px",
-              }}
-            >
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
               <MetricCard
                 title="Physical DPI"
                 value={metrics.physicalDPI}
@@ -182,13 +170,7 @@ export const FloatingDisplayInfo = () => {
                 Measurement Units
               </Text>
             </Group>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-              }}
-            >
+            <div className="grid grid-cols-2 gap-4">
               <MetricCard
                 title="Pixels per CM"
                 value={metrics.pixelsPerCm}

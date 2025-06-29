@@ -42,12 +42,15 @@ const useDisplayMetrics = (): DisplayMetrics | null => {
 
       // Create a temporary element to measure DPI
       const testElement = document.createElement("div");
-      testElement.style.width = "1in";
-      testElement.style.height = "1in";
-      testElement.style.position = "absolute";
-      testElement.style.left = "-100%";
-      testElement.style.top = "-100%";
-      testElement.style.visibility = "hidden";
+      // Apply styles for DPI measurement - these cannot use Tailwind as they're programmatically created
+      Object.assign(testElement.style, {
+        width: "1in",
+        height: "1in",
+        position: "absolute",
+        left: "-100%",
+        top: "-100%",
+        visibility: "hidden",
+      });
       document.body.appendChild(testElement);
 
       const pixelsPerInch = testElement.offsetWidth;
