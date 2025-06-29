@@ -1,26 +1,18 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Index Page", () => {
-  test("should load the home page", async ({ page }) => {
+  test("should load the ruler grid page", async ({ page }) => {
     await page.goto("/");
 
     // Check page title
     await expect(page).toHaveTitle("Next.js with Mantine");
 
-    // Check main heading
-    await expect(
-      page.getByRole("heading", {
-        name: "Welcome to Next.js with Mantine!",
-        level: 1,
-      }),
-    ).toBeVisible();
+    // Check that the ruler grid SVG is present
+    const gridSvg = page.locator('svg[role="img"][aria-label="Ruler grid overlay"]');
+    await expect(gridSvg).toBeVisible();
 
-    // Check welcome text
-    await expect(
-      page.getByText(
-        "Mantine has been successfully set up in your Next.js project.",
-      ),
-    ).toBeVisible();
+    // Check that the grid has the "cm" unit label
+    await expect(page.getByText("cm")).toBeVisible();
   });
 
   test("should have correct meta description", async ({ page }) => {
@@ -42,22 +34,26 @@ test.describe("Index Page", () => {
     await expect(favicon).toHaveAttribute("href", "/favicon.ico");
   });
 
-  test("should have interactive buttons", async ({ page }) => {
+  test("should have display info button and modal", async ({ page }) => {
     await page.goto("/");
 
-    // Check that both buttons are visible
-    await expect(
-      page.getByRole("button", { name: "Primary Button" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Outline Button" }),
-    ).toBeVisible();
+    // Check that Display Info button is visible
+    const displayInfoButton = page.getByRole("button", { name: "Display Info" });
+    await expect(displayInfoButton).toBeVisible();
+    await expect(displayInfoButton).toBeEnabled();
 
-    // Verify buttons are clickable
-    const primaryButton = page.getByRole("button", { name: "Primary Button" });
-    const outlineButton = page.getByRole("button", { name: "Outline Button" });
+    // Click the button to open the modal
+    await displayInfoButton.click();
 
-    await expect(primaryButton).toBeEnabled();
-    await expect(outlineButton).toBeEnabled();
+    // Check that modal opened with display metrics
+    await expect(page.getByText("Display Information")).toBeVisible();
+    await expect(page.getByText("Device Pixel Ratio")).toBeVisible();
+    await expect(page.getByText("Screen Resolution")).toBeVisible();
+
+    // Close the modal by pressing Escape key (more reliable than clicking X)
+    await page.keyboard.press('Escape');
+    
+    // Verify modal is closed by checking that Display Information is no longer visible
+    await expect(page.getByText("Display Information")).not.toBeVisible();
   });
 });
