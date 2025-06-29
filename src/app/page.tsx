@@ -1,18 +1,15 @@
-import { Button, Container, Group, Text, Title } from "@mantine/core";
+"use client";
+
+import { Container, Title } from "@mantine/core";
+import { DisplayScalingInfo } from "@/components/DisplayScalingInfo";
 
 export default function Home() {
   return (
     <Container size="md" py="xl">
-      <Title order={1} mb="md">
-        Welcome to Next.js with Mantine!
+      <Title order={1} mb="xl" ta="center">
+        Display Scaling & Measurement Tool
       </Title>
-      <Text size="lg" mb="xl">
-        Mantine has been successfully set up in your Next.js project.
-      </Text>
-      <Group>
-        <Button variant="filled">Primary Button</Button>
-        <Button variant="outline">Outline Button</Button>
-      </Group>
+      <DisplayScalingInfo />
     </Container>
   );
 }
