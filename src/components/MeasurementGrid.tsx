@@ -9,7 +9,7 @@ export const MeasurementGrid = () => {
     return null;
   }
 
-  const gridSpacing = metrics.pixelsPerCm;
+  const gridSpacing = metrics.pixelsPerCm / (metrics.zoomLevel / 100);
 
   const generateGridLines = () => {
     const lines = [];
@@ -54,7 +54,6 @@ export const MeasurementGrid = () => {
   };
 
   const generateRulerMarkings = () => {
-
     const markings = [];
     const maxWidth = window.innerWidth;
     const maxHeight = window.innerHeight;

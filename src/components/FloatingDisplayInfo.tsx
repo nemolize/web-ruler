@@ -1,10 +1,9 @@
 "use client";
 
-import { Badge, Button, Card, Group, Modal, Paper, Stack, Text } from "@mantine/core";
-import { Info, Monitor, Ruler, X } from "lucide-react";
+import { Badge, Button, Card, Group, Modal, Stack, Text } from "@mantine/core";
+import { Info, Monitor, Ruler } from "lucide-react";
 import { useState } from "react";
 import { useDisplayMetrics } from "../shared/useDisplayMetrics";
-
 
 const MetricCard = ({
   title,
@@ -72,11 +71,13 @@ export const FloatingDisplayInfo = () => {
   return (
     <>
       {/* Floating Button */}
-      <div style={{
-        position: "fixed",
-        top: 24,
-        left: 24
-      }}>
+      <div
+        style={{
+          position: "fixed",
+          top: 24,
+          left: 24,
+        }}
+      >
         <Button
           variant="filled"
           size="sm"
@@ -211,7 +212,9 @@ export const FloatingDisplayInfo = () => {
                 size="md"
                 variant="filled"
               >
-                {metrics.devicePixelRatio >= 2 ? "Retina Display" : "Standard Display"}
+                {metrics.devicePixelRatio >= 2
+                  ? "Retina Display"
+                  : "Standard Display"}
               </Badge>
               <Badge color="blue" size="md" variant="light">
                 {metrics.screenWidth >= 1920 ? "HD+" : "Standard"} Resolution
