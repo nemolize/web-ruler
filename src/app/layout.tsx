@@ -4,8 +4,8 @@ import { MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Next.js with Mantine",
-  description: "Next.js app with Mantine UI",
+  title: "Web Ruler - Digital Measurement Tool",
+  description: "Precise digital ruler for measuring objects on your screen. Features ruler grid, display calibration, and real-time metrics.",
 };
 
 export default function RootLayout({
