@@ -1,8 +1,8 @@
 "use client";
 
-import { useDisplayMetrics } from "../shared/useDisplayMetrics";
+import { useDisplayMetrics } from "../hooks/useDisplayMetrics";
 
-export const MeasurementGrid = () => {
+export const RulerGrid = () => {
   const metrics = useDisplayMetrics();
 
   if (!metrics) {
@@ -112,9 +112,9 @@ export const MeasurementGrid = () => {
           pointerEvents: "none",
         }}
         role="img"
-        aria-label="Measurement grid overlay"
+        aria-label="Ruler grid overlay"
       >
-        <title>Measurement grid overlay</title>
+        <title>Ruler grid overlay</title>
         {/* Ruler background */}
         <rect
           x={0}

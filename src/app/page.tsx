@@ -1,12 +1,12 @@
 "use client";
 
 import { FloatingDisplayInfo } from "@/components/FloatingDisplayInfo";
-import { MeasurementGrid } from "@/components/MeasurementGrid";
+import { RulerGrid } from "@/components/RulerGrid";
 
 export default function Home() {
   return (
     <>
-      <MeasurementGrid />
+      <RulerGrid />
       <FloatingDisplayInfo />
     </>
   );

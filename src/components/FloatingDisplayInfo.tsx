@@ -3,7 +3,7 @@
 import { Badge, Button, Card, Group, Modal, Stack, Text } from "@mantine/core";
 import { Info, Monitor, Ruler } from "lucide-react";
 import { useState } from "react";
-import { useDisplayMetrics } from "../shared/useDisplayMetrics";
+import { useDisplayMetrics } from "../hooks/useDisplayMetrics";
 
 const MetricCard = ({
   title,
