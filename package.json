@@ -10,6 +10,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "typecheck": "tsc --noEmit",
+    "test": "vitest",
     "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -26,10 +27,14 @@
   "devDependencies": {
     "@biomejs/biome": "^2.0.5",
     "@playwright/test": "^1.53.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "jsdom": "^26.1.0",
     "playwright": "^1.53.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^3.2.4"
   }
 }
