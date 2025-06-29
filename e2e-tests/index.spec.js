@@ -5,10 +5,12 @@ test.describe("Index Page", () => {
     await page.goto("/");
 
     // Check page title
-    await expect(page).toHaveTitle("Next.js with Mantine");
+    await expect(page).toHaveTitle("Web Ruler - Digital Measurement Tool");
 
     // Check that the ruler grid SVG is present
-    const gridSvg = page.locator('svg[role="img"][aria-label="Ruler grid overlay"]');
+    const gridSvg = page.locator(
+      'svg[role="img"][aria-label="Ruler grid overlay"]',
+    );
     await expect(gridSvg).toBeVisible();
 
     // Check that the grid has the "cm" unit label
@@ -22,7 +24,7 @@ test.describe("Index Page", () => {
     const metaDescription = page.locator('meta[name="description"]');
     await expect(metaDescription).toHaveAttribute(
       "content",
-      "Next.js app with Mantine UI",
+      "Precise digital ruler for measuring objects on your screen. Features ruler grid, display calibration, and real-time metrics.",
     );
   });
 
@@ -38,7 +40,9 @@ test.describe("Index Page", () => {
     await page.goto("/");
 
     // Check that Display Info button is visible
-    const displayInfoButton = page.getByRole("button", { name: "Display Info" });
+    const displayInfoButton = page.getByRole("button", {
+      name: "Display Info",
+    });
     await expect(displayInfoButton).toBeVisible();
     await expect(displayInfoButton).toBeEnabled();
 
@@ -51,8 +55,8 @@ test.describe("Index Page", () => {
     await expect(page.getByText("Screen Resolution")).toBeVisible();
 
     // Close the modal by pressing Escape key (more reliable than clicking X)
-    await page.keyboard.press('Escape');
-    
+    await page.keyboard.press("Escape");
+
     // Verify modal is closed by checking that Display Information is no longer visible
     await expect(page.getByText("Display Information")).not.toBeVisible();
   });
