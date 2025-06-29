@@ -13,8 +13,9 @@ test.describe("Index Page", () => {
     );
     await expect(gridSvg).toBeVisible();
 
-    // Check that the grid has the "cm" unit label
-    await expect(page.getByText("cm")).toBeVisible();
+    // Check that the grid has the "cm" unit label in the SVG
+    const svgUnitLabel = gridSvg.getByText("cm");
+    await expect(svgUnitLabel).toBeVisible();
   });
 
   test("should have correct meta description", async ({ page }) => {
@@ -59,5 +60,94 @@ test.describe("Index Page", () => {
 
     // Verify modal is closed by checking that Display Information is no longer visible
     await expect(page.getByText("Display Information")).not.toBeVisible();
+  });
+
+  test("should have unit selector with default cm unit", async ({ page }) => {
+    await page.goto("/");
+
+    // Check that unit selector is visible (using a more specific selector)
+    const unitSelector = page
+      .locator('[data-testid="unit-selector"] input, .mantine-Select-input')
+      .first();
+    await expect(unitSelector).toBeVisible();
+
+    // Check that default unit is cm (should show in the ruler SVG)
+    const gridSvg = page.locator(
+      'svg[role="img"][aria-label="Ruler grid overlay"]',
+    );
+    const svgUnitLabel = gridSvg.getByText("cm");
+    await expect(svgUnitLabel).toBeVisible();
+  });
+
+  test("should change units when selecting different options", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    // Find and click the unit selector
+    const unitSelector = page.locator(".mantine-Select-input").first();
+    await unitSelector.click();
+
+    // Select millimeters
+    await page.getByText("Millimeters (mm)").click();
+
+    // Check that the ruler now shows mm in the SVG
+    const gridSvg = page.locator(
+      'svg[role="img"][aria-label="Ruler grid overlay"]',
+    );
+    await expect(gridSvg.getByText("mm")).toBeVisible();
+
+    // Click selector again to change to inches
+    await unitSelector.click();
+    await page.getByText("Inches (in)").click();
+
+    // Check that the ruler now shows in
+    await expect(gridSvg.getByText("in")).toBeVisible();
+
+    // Change back to centimeters
+    await unitSelector.click();
+    await page.getByText("Centimeters (cm)").click();
+
+    // Check that the ruler shows cm again
+    await expect(gridSvg.getByText("cm")).toBeVisible();
+  });
+
+  test("should persist unit selection across page reloads", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    // Change to millimeters
+    const unitSelector = page.locator(".mantine-Select-input").first();
+    await unitSelector.click();
+    await page.getByText("Millimeters (mm)").click();
+
+    // Verify mm is selected in the SVG
+    const gridSvg = page.locator(
+      'svg[role="img"][aria-label="Ruler grid overlay"]',
+    );
+    await expect(gridSvg.getByText("mm")).toBeVisible();
+
+    // Reload the page
+    await page.reload();
+
+    // Check that mm is still selected after reload
+    await expect(gridSvg.getByText("mm")).toBeVisible();
+  });
+
+  test("should show all three unit options", async ({ page }) => {
+    await page.goto("/");
+
+    // Open the unit selector dropdown
+    const unitSelector = page.locator(".mantine-Select-input").first();
+    await unitSelector.click();
+
+    // Check that all three options are available
+    await expect(page.getByText("Centimeters (cm)")).toBeVisible();
+    await expect(page.getByText("Millimeters (mm)")).toBeVisible();
+    await expect(page.getByText("Inches (in)")).toBeVisible();
+
+    // Close dropdown by pressing Escape
+    await page.keyboard.press("Escape");
   });
 });

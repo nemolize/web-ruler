@@ -39,7 +39,7 @@ export const FloatingDisplayInfo = () => {
 
   if (!metrics) {
     return (
-      <div className="fixed top-4 left-4 z-50">
+      <div className="fixed top-8 left-4">
         <Button
           variant="filled"
           size="sm"
@@ -71,7 +71,7 @@ export const FloatingDisplayInfo = () => {
   return (
     <>
       {/* Floating Button */}
-      <div className="fixed top-6 left-6">
+      <div className="fixed top-8 left-4">
         <Button
           variant="filled"
           size="sm"

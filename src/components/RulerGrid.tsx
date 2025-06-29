@@ -1,15 +1,18 @@
 "use client";
 
 import { useDisplayMetrics } from "../hooks/useDisplayMetrics";
+import { useUnit } from "../hooks/useUnit";
+import { UnitSelector } from "./UnitSelector";
 
 export const RulerGrid = () => {
   const metrics = useDisplayMetrics();
+  const { selectedUnit, changeUnit, unitMetrics } = useUnit(metrics);
 
-  if (!metrics) {
+  if (!metrics || !unitMetrics) {
     return null;
   }
 
-  const gridSpacing = metrics.pixelsPerCm / (metrics.zoomLevel / 100);
+  const { gridSpacing, unitLabel } = unitMetrics;
 
   const generateGridLines = () => {
     const lines = [];
@@ -137,9 +140,11 @@ export const RulerGrid = () => {
           fontFamily="monospace"
           fontWeight="bold"
         >
-          cm
+          {unitLabel}
         </text>
       </svg>
+
+      <UnitSelector selectedUnit={selectedUnit} onUnitChange={changeUnit} />
     </>
   );
 };
