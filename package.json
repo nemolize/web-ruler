@@ -16,15 +16,15 @@
     "@mantine/core": "^8.1.2",
     "@mantine/hooks": "^8.1.2",
     "next": "15.3.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.5",
     "@playwright/test": "^1.53.1",
     "@types/node": "^22.0.0",
-    "@types/react": "^18.3.23",
-    "@types/react-dom": "^18.3.7",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "playwright": "^1.53.1",
     "typescript": "^5.7.2"
   }
