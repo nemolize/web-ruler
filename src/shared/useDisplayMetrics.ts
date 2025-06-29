@@ -28,9 +28,9 @@ export const useDisplayMetrics = (): DisplayMetrics | null => {
       const viewportHeight = window.innerHeight;
 
       // Check for stored calibration
-      const storedCalibration = localStorage.getItem('displayCalibration');
+      const storedCalibration = localStorage.getItem("displayCalibration");
       let pixelsPerCm: number;
-      
+
       if (storedCalibration) {
         pixelsPerCm = parseFloat(storedCalibration);
       } else {
@@ -46,9 +46,17 @@ export const useDisplayMetrics = (): DisplayMetrics | null => {
 
       const logicalDPI = pixelsPerInch;
       const physicalDPI = logicalDPI * devicePixelRatio;
-      
-      // Better zoom detection using window dimensions
-      const zoomLevel = Math.round((window.outerWidth / window.screen.width) * 100);
+
+      // Zoom detection with priority for mobile devices
+      let zoomLevel = 100;
+
+      // Method 1: Visual Viewport API for mobile pinch zoom
+      if (window.visualViewport) {
+        const scale = window.visualViewport.scale;
+        if (scale && scale !== 1) {
+          zoomLevel = Math.round(scale * 100);
+        }
+      }
 
       return {
         devicePixelRatio,
@@ -73,9 +81,21 @@ export const useDisplayMetrics = (): DisplayMetrics | null => {
     window.addEventListener("resize", updateMetrics);
     window.addEventListener("orientationchange", updateMetrics);
 
+    // Listen for visualViewport changes (zoom/pinch events on mobile)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", updateMetrics);
+      window.visualViewport.addEventListener("scroll", updateMetrics);
+    }
+
     return () => {
       window.removeEventListener("resize", updateMetrics);
       window.removeEventListener("orientationchange", updateMetrics);
+
+      // Clean up visualViewport listeners
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", updateMetrics);
+        window.visualViewport.removeEventListener("scroll", updateMetrics);
+      }
     };
   }, []);
 
@@ -83,9 +103,12 @@ export const useDisplayMetrics = (): DisplayMetrics | null => {
 };
 
 // Calibration helper function
-export const calibrateDisplay = (knownSizeCm: number, measuredPixels: number) => {
+export const calibrateDisplay = (
+  knownSizeCm: number,
+  measuredPixels: number,
+) => {
   const pixelsPerCm = measuredPixels / knownSizeCm;
-  localStorage.setItem('displayCalibration', pixelsPerCm.toString());
+  localStorage.setItem("displayCalibration", pixelsPerCm.toString());
   // Trigger a page refresh or dispatch an event to update metrics
   window.location.reload();
 };
