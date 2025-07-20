@@ -106,7 +106,7 @@ export const FloatingDisplayInfo = () => {
           </Group>
 
           {/* Key Metrics */}
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex flex-wrap gap-4">
             <MetricCard
               title="Resolution"
               value={`${metrics.pixelsPerCm}`}

@@ -104,7 +104,7 @@ export const RulerGrid = () => {
     <>
       {/* Grid */}
       <svg
-        className="fixed inset-0 w-full h-full pointer-events-none"
+        className="pointer-events-none fixed inset-0 h-full w-full"
         role="img"
         aria-label="Ruler grid overlay"
       >

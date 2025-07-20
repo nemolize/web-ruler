@@ -5,7 +5,7 @@ A precise digital measurement tool that turns your screen into a ruler. Perfect 
 ## Features
 
 - **Precise Ruler Grid**: SVG-based ruler overlay with centimeter markings
-- **Display Metrics**: Real-time DPI, resolution, and zoom level detection  
+- **Display Metrics**: Real-time DPI, resolution, and zoom level detection
 - **Smart Calibration**: Calibrate using common objects (credit cards, quarters, etc.)
 - **Zoom Detection**: Automatically adjusts for browser zoom levels
 - **Mobile Responsive**: Works on both desktop and mobile devices

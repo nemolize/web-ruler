@@ -1,8 +1,8 @@
-name: 'Setup Node.js and Dependencies'
-description: 'Setup Node.js environment, pnpm, cache, and install dependencies'
+name: "Setup Node.js and Dependencies"
+description: "Setup Node.js environment, pnpm, cache, and install dependencies"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - uses: jdx/mise-action@v2
     - run: pnpm install --frozen-lockfile
