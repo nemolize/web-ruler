@@ -179,10 +179,10 @@ export const Level = () => {
                 </svg>
                 {/* Bubble */}
                 <div
-                  className="absolute h-8 w-8 rounded-full bg-blue-500 shadow-lg"
+                  className="absolute size-4 rounded-full bg-blue-500 shadow-lg"
                   style={{
-                    left: `calc(50% - ${bubbleX}px - 16px)`,
-                    top: `calc(50% - ${bubbleY}px - 16px)`,
+                    left: `calc(50% - ${bubbleX}px - 8px)`,
+                    top: `calc(50% - ${bubbleY}px - 8px)`,
                   }}
                 />
               </div>
