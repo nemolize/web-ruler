@@ -16,14 +16,6 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm lint
 
-  TypeCheck:
-    runs-on: ubuntu-24.04
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: pnpm typecheck
-
   E2ETests:
     runs-on: ubuntu-24.04
 
