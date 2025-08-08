@@ -16,7 +16,8 @@
     "fix:prettier": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "@mantine/core": "^8.1.2",
@@ -44,6 +45,7 @@
     "eslint-config-next": "^15.4.2",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jsdom": "^26.1.0",
+    "lefthook": "^1.12.2",
     "npm-run-all2": "^8.0.4",
     "playwright": "^1.53.1",
     "prettier": "^3.6.2",
