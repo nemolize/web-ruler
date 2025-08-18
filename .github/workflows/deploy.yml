@@ -10,11 +10,19 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: "Version Preview URL: ⏳deployment is in progress..."
+
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
 
       - name: Restore build cache
@@ -28,13 +36,19 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
             ${{ runner.os }}-nextjs-
 
-      - name: Deploy
+      - run: npx opennextjs-cloudflare build
+
+      - id: deploy
+        name: Deploy
         run: |
-          npx opennextjs-cloudflare build
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            npx opennextjs-cloudflare upload
-          else
-            npx opennextjs-cloudflare deploy
-          fi
+          OUTPUT=$(npx opennextjs-cloudflare ${{ github.event_name == 'pull_request' && 'upload' || 'deploy' }})
+          echo "$OUTPUT"
+          echo "preview_line=$(echo "$OUTPUT" | grep "Version Preview URL:")" >> $GITHUB_OUTPUT
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Add preview URL comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: ${{ steps.deploy.outputs.preview_line }}
