@@ -36,6 +36,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
             ${{ runner.os }}-nextjs-
 
+      - uses: nemolize/set-wrangler-name@v1
       - run: npx opennextjs-cloudflare build
 
       - id: deploy
