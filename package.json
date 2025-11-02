@@ -44,7 +44,7 @@
     "eslint-config-next": "^15.5.4",
     "eslint-plugin-unused-imports": "^4.2.0",
     "jsdom": "^27.0.0",
-    "lefthook": "^1.13.4",
+    "lefthook": "^2.0.0",
     "npm-run-all2": "^8.0.4",
     "playwright": "^1.55.1",
     "prettier": "^3.6.2",
