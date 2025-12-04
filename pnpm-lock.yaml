@@ -16,7 +16,7 @@ importers:
         version: 8.3.9(react@19.2.0)
       '@opennextjs/cloudflare':
         specifier: ^1.8.4
-        version: 1.14.3(next@16.0.5(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(wrangler@4.51.0)
+        version: 1.14.3(next@16.0.7(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(wrangler@4.51.0)
       '@tailwindcss/postcss':
         specifier: ^4.1.13
         version: 4.1.17
@@ -83,10 +83,10 @@ importers:
         version: 1.57.0
       prettier:
         specifier: ^3.6.2
-        version: 3.7.2
+        version: 3.7.4
       prettier-plugin-tailwindcss:
         specifier: ^0.7.0
-        version: 0.7.2(prettier@3.7.2)
+        version: 0.7.2(prettier@3.7.4)
       typescript:
         specifier: ^5.9.2
         version: 5.9.3
@@ -3314,8 +3314,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.7.2:
-    resolution: {integrity: sha512-n3HV2J6QhItCXndGa3oMWvWFAgN1ibnS7R9mt6iokScBOC0Ul9/iZORmU2IWUMcyAQaMPjTlY3uT34TqocUxMA==}
+  prettier@3.7.4:
+    resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5660,7 +5660,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@opennextjs/aws@3.9.4(next@16.0.5(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
+  '@opennextjs/aws@3.9.4(next@16.0.7(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
       '@ast-grep/napi': 0.40.0
       '@aws-sdk/client-cloudfront': 3.398.0
@@ -5676,7 +5676,7 @@ snapshots:
       cookie: 1.1.1
       esbuild: 0.25.4
       express: 5.2.1
-      next: 16.0.5(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      next: 16.0.7(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       path-to-regexp: 6.3.0
       urlpattern-polyfill: 10.1.0
       yaml: 2.8.2
@@ -5684,15 +5684,15 @@ snapshots:
       - aws-crt
       - supports-color
 
-  '@opennextjs/cloudflare@1.14.3(next@16.0.5(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(wrangler@4.51.0)':
+  '@opennextjs/cloudflare@1.14.3(next@16.0.7(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(wrangler@4.51.0)':
     dependencies:
       '@ast-grep/napi': 0.40.0
       '@dotenvx/dotenvx': 1.31.0
-      '@opennextjs/aws': 3.9.4(next@16.0.5(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+      '@opennextjs/aws': 3.9.4(next@16.0.7(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       cloudflare: 4.5.0
       enquirer: 2.4.1
       glob: 12.0.0
-      next: 16.0.5(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      next: 16.0.7(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       ts-tqdm: 0.8.6
       wrangler: 4.51.0
       yargs: 18.0.0
@@ -7773,11 +7773,11 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-tailwindcss@0.7.2(prettier@3.7.2):
+  prettier-plugin-tailwindcss@0.7.2(prettier@3.7.4):
     dependencies:
-      prettier: 3.7.2
+      prettier: 3.7.4
 
-  prettier@3.7.2: {}
+  prettier@3.7.4: {}
 
   pretty-format@27.5.1:
     dependencies:
