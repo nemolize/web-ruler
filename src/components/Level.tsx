@@ -1,6 +1,15 @@
 "use client";
 
-import { Badge, Button, Card, Group, Modal, Stack, Text } from "@mantine/core";
+import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  Modal,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { Activity } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -135,14 +144,24 @@ export const Level = () => {
           )}
 
           {/* Status Badges */}
-          <Group gap="md">
-            <Badge color={horizontalStatus.color} size="lg" variant="filled">
+          <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="md">
+            <Badge
+              color={horizontalStatus.color}
+              size="lg"
+              variant="filled"
+              fullWidth
+            >
               Horizontal: {horizontalStatus.status}
             </Badge>
-            <Badge color={verticalStatus.color} size="lg" variant="filled">
+            <Badge
+              color={verticalStatus.color}
+              size="lg"
+              variant="filled"
+              fullWidth
+            >
               Vertical: {verticalStatus.status}
             </Badge>
-          </Group>
+          </SimpleGrid>
 
           {/* 2D Bubble Level */}
           <Card withBorder p="lg">
