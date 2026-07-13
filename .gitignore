@@ -32,3 +32,7 @@ next-env.d.ts
 
 # playwright
 /test-results/
+/playwright-report/
+
+# open-next / cloudflare build output
+/.open-next/
