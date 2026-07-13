@@ -28,11 +28,19 @@ export const useDisplayMetrics = (): DisplayMetrics | null => {
       const viewportHeight = window.innerHeight;
 
       // Check for stored calibration
-      const storedCalibration = localStorage.getItem("displayCalibration");
+      let storedCalibration: string | null = null;
+      try {
+        storedCalibration = localStorage.getItem("displayCalibration");
+      } catch {
+        // localStorage unavailable (e.g. blocked by privacy settings)
+      }
       let pixelsPerCm: number;
 
-      if (storedCalibration) {
-        pixelsPerCm = parseFloat(storedCalibration);
+      const calibrated = storedCalibration
+        ? parseFloat(storedCalibration)
+        : NaN;
+      if (Number.isFinite(calibrated) && calibrated > 0) {
+        pixelsPerCm = calibrated;
       } else {
         // Improved default calculation - assume standard 96 DPI but adjust for device pixel ratio
         // This is still an approximation, but better than pure CSS inches

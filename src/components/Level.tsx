@@ -34,6 +34,8 @@ export const Level = () => {
       }
     };
 
+    let cancelled = false;
+
     const requestPermission = async () => {
       // For iOS 13+ we need to request permission
       if (
@@ -50,7 +52,7 @@ export const Level = () => {
               requestPermission: () => Promise<string>;
             }
           ).requestPermission();
-          if (response === "granted") {
+          if (response === "granted" && !cancelled) {
             setHasPermission(true);
             window.addEventListener("deviceorientation", handleOrientation);
           }
@@ -72,6 +74,7 @@ export const Level = () => {
     }
 
     return () => {
+      cancelled = true;
       window.removeEventListener("deviceorientation", handleOrientation);
     };
   }, [showLevel]);

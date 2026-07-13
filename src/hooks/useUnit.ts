@@ -16,16 +16,25 @@ export const useUnit = (metrics: DisplayMetrics | null) => {
 
   // Load saved unit preference
   useEffect(() => {
-    const savedUnit = localStorage.getItem("selectedUnit") as Unit;
+    let savedUnit: string | null = null;
+    try {
+      savedUnit = localStorage.getItem("selectedUnit");
+    } catch {
+      // localStorage unavailable (e.g. blocked by privacy settings)
+    }
     if (savedUnit && ["cm", "mm", "in"].includes(savedUnit)) {
-      setSelectedUnit(savedUnit);
+      setSelectedUnit(savedUnit as Unit);
     }
   }, []);
 
   // Save unit preference
   const changeUnit = (unit: Unit) => {
     setSelectedUnit(unit);
-    localStorage.setItem("selectedUnit", unit);
+    try {
+      localStorage.setItem("selectedUnit", unit);
+    } catch {
+      // localStorage unavailable; the selection still applies for this session
+    }
   };
 
   // Calculate unit-specific metrics
