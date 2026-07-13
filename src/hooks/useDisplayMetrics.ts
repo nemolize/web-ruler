@@ -109,22 +109,3 @@ export const useDisplayMetrics = (): DisplayMetrics | null => {
 
   return metrics;
 };
-
-// Calibration helper function
-export const calibrateDisplay = (
-  knownSizeCm: number,
-  measuredPixels: number,
-) => {
-  const pixelsPerCm = measuredPixels / knownSizeCm;
-  localStorage.setItem("displayCalibration", pixelsPerCm.toString());
-  // Trigger a page refresh or dispatch an event to update metrics
-  window.location.reload();
-};
-
-// Common calibration objects
-export const calibrationObjects = [
-  { name: "Credit Card (width)", sizeCm: 8.56 },
-  { name: "Credit Card (height)", sizeCm: 5.398 },
-  { name: "US Quarter (diameter)", sizeCm: 2.426 },
-  { name: "Standard Ruler (1 inch)", sizeCm: 2.54 },
-];
