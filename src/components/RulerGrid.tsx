@@ -14,10 +14,11 @@ export const RulerGrid = () => {
 
   const { gridSpacing, unitLabel } = unitMetrics;
 
+  const maxWidth = metrics.viewportWidth;
+  const maxHeight = metrics.viewportHeight;
+
   const generateGridLines = () => {
     const lines = [];
-    const maxWidth = window.innerWidth;
-    const maxHeight = window.innerHeight;
 
     // Vertical lines
     for (let i = 0; i * gridSpacing <= maxWidth; i++) {
@@ -58,8 +59,6 @@ export const RulerGrid = () => {
 
   const generateRulerMarkings = () => {
     const markings = [];
-    const maxWidth = window.innerWidth;
-    const maxHeight = window.innerHeight;
 
     // Top ruler (horizontal)
     for (let i = 0; i * gridSpacing <= maxWidth; i++) {
