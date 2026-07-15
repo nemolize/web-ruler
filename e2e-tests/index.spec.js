@@ -25,7 +25,7 @@ test.describe("Index Page", () => {
     const metaDescription = page.locator('meta[name="description"]');
     await expect(metaDescription).toHaveAttribute(
       "content",
-      "Precise digital ruler for measuring objects on your screen. Features ruler grid, display calibration, and real-time metrics.",
+      "Browser-based screen ruler with centimeter, millimeter, and inch grids, display metrics, zoom detection, and a digital level.",
     );
   });
 
