@@ -3,7 +3,7 @@
 import { Badge, Button, Card, Group, Modal, Stack, Text } from "@mantine/core";
 import { Info, Monitor, Ruler } from "lucide-react";
 import { useState } from "react";
-import { useDisplayMetrics } from "../hooks/useDisplayMetrics";
+import type { DisplayMetrics } from "../hooks/useDisplayMetrics";
 
 const MetricCard = ({
   title,
@@ -33,9 +33,12 @@ const MetricCard = ({
   </div>
 );
 
-export const FloatingDisplayInfo = () => {
+interface FloatingDisplayInfoProps {
+  metrics: DisplayMetrics | null;
+}
+
+export const FloatingDisplayInfo = ({ metrics }: FloatingDisplayInfoProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const metrics = useDisplayMetrics();
 
   if (!metrics) {
     return (

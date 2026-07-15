@@ -17,6 +17,7 @@ permissions:
 jobs:
   Deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
@@ -37,12 +38,12 @@ jobs:
             ${{ runner.os }}-nextjs-
 
       - uses: nemolize/set-wrangler-name@v1
-      - run: npx opennextjs-cloudflare build
+      - run: pnpm exec opennextjs-cloudflare build
 
       - id: deploy
         name: Deploy
         run: |
-          OUTPUT=$(npx opennextjs-cloudflare ${{ github.event_name == 'pull_request' && 'upload' || 'deploy' }})
+          OUTPUT=$(pnpm exec opennextjs-cloudflare ${{ github.event_name == 'pull_request' && 'upload' || 'deploy' }})
           echo "$OUTPUT"
           echo "preview_line=$(echo "$OUTPUT" | grep "Version Preview URL:")" >> $GITHUB_OUTPUT
         env:
