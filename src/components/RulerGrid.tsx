@@ -1,11 +1,14 @@
 "use client";
 
-import { useDisplayMetrics } from "../hooks/useDisplayMetrics";
+import type { DisplayMetrics } from "../hooks/useDisplayMetrics";
 import { useUnit } from "../hooks/useUnit";
 import { UnitSelector } from "./UnitSelector";
 
-export const RulerGrid = () => {
-  const metrics = useDisplayMetrics();
+interface RulerGridProps {
+  metrics: DisplayMetrics | null;
+}
+
+export const RulerGrid = ({ metrics }: RulerGridProps) => {
   const { selectedUnit, changeUnit, unitMetrics } = useUnit(metrics);
 
   if (!metrics || !unitMetrics) {
