@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Web Ruler - Digital Measurement Tool",
   description:
-    "Precise digital ruler for measuring objects on your screen. Features ruler grid, display calibration, and real-time metrics.",
+    "Browser-based screen ruler with centimeter, millimeter, and inch grids, display metrics, zoom detection, and a digital level.",
 };
 
 export default function RootLayout({
