@@ -47,7 +47,7 @@
     "npm-run-all2": "^8.0.4",
     "playwright": "^1.57.0",
     "prettier": "^3.7.4",
-    "prettier-plugin-tailwindcss": "^0.7.2",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.1",
     "vitest": "^4.0.15",
