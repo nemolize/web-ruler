@@ -10,7 +10,6 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { Activity } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -20,16 +19,11 @@ interface OrientationData {
 }
 
 const MAX_BUBBLE_TRAVEL = 45;
-const MAX_DISPLAY_ANGLE = 30;
-const DISPLAY_TILT_SCALE = 0.45;
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
 export const Level = () => {
-  const prefersReducedMotion = useMediaQuery(
-    "(prefers-reduced-motion: reduce)",
-  );
   const [orientation, setOrientation] = useState<OrientationData>({
     beta: 0,
     gamma: 0,
@@ -123,15 +117,6 @@ export const Level = () => {
     -MAX_BUBBLE_TRAVEL,
     MAX_BUBBLE_TRAVEL,
   );
-  const displayTiltX = prefersReducedMotion
-    ? 0
-    : clamp(orientation.beta, -MAX_DISPLAY_ANGLE, MAX_DISPLAY_ANGLE) *
-      -DISPLAY_TILT_SCALE;
-  const displayTiltY = prefersReducedMotion
-    ? 0
-    : clamp(orientation.gamma, -MAX_DISPLAY_ANGLE, MAX_DISPLAY_ANGLE) *
-      DISPLAY_TILT_SCALE;
-
   return (
     <>
       {/* Floating Level Button */}
@@ -200,13 +185,13 @@ export const Level = () => {
             >
               <div
                 aria-hidden="true"
+                data-testid="level-shadow"
                 className="absolute right-5 bottom-1 left-5 h-12 rounded-[50%] bg-slate-950/25 blur-md"
               />
               <div
                 data-testid="level-platform"
-                className="absolute inset-4 rounded-full border-8 border-slate-500 bg-slate-700 shadow-2xl transition-transform duration-150 ease-out motion-reduce:transition-none"
+                className="absolute inset-4 rounded-full border-8 border-slate-500 bg-slate-700 shadow-2xl"
                 style={{
-                  transform: `rotateX(${displayTiltX}deg) rotateY(${displayTiltY}deg)`,
                   transformStyle: "preserve-3d",
                 }}
               >
@@ -220,9 +205,13 @@ export const Level = () => {
                     transformStyle: "preserve-3d",
                   }}
                 >
-                  <div className="absolute inset-[18%] rounded-full border-2 border-emerald-500/80 bg-emerald-100/10 shadow-[0_0_12px_rgba(34,197,94,0.25)]" />
+                  <div
+                    data-testid="level-target"
+                    className="absolute inset-[18%] rounded-full border-2 border-emerald-500/80 bg-emerald-100/10 shadow-[0_0_12px_rgba(34,197,94,0.25)]"
+                  />
                   <svg
                     aria-hidden="true"
+                    data-testid="level-grid"
                     className="absolute inset-0 h-full w-full opacity-70"
                   >
                     <line

@@ -32,9 +32,9 @@ describe("Level", () => {
 
     expect(await screen.findByText("3D Bubble Level")).toBeInTheDocument();
     expect(screen.getByTestId("level-platform")).toHaveStyle({
-      transform: "rotateX(0deg) rotateY(0deg)",
       transformStyle: "preserve-3d",
     });
+    expect(screen.getByTestId("level-platform").style.transform).toBe("");
     expect(screen.getByTestId("level-vessel")).toHaveStyle({
       transformStyle: "preserve-3d",
     });
@@ -43,16 +43,35 @@ describe("Level", () => {
     });
   });
 
-  it("tilts the platform and clamps the bubble travel", async () => {
+  it("moves only the bubble and clamps its travel", async () => {
     renderLevel();
     fireEvent.click(screen.getByRole("button", { name: "Level" }));
     await screen.findByText("3D Bubble Level");
 
+    const fixedPartIds = [
+      "level-shadow",
+      "level-platform",
+      "level-vessel",
+      "level-target",
+      "level-grid",
+    ];
+    const fixedPartAttributes = fixedPartIds.map((testId) => {
+      const element = screen.getByTestId(testId);
+      return {
+        className: element.getAttribute("class"),
+        style: element.getAttribute("style"),
+      };
+    });
+
     dispatchOrientation(60, -60);
 
     await waitFor(() => {
-      expect(screen.getByTestId("level-platform")).toHaveStyle({
-        transform: "rotateX(-13.5deg) rotateY(-13.5deg)",
+      fixedPartIds.forEach((testId, index) => {
+        const element = screen.getByTestId(testId);
+        expect({
+          className: element.getAttribute("class"),
+          style: element.getAttribute("style"),
+        }).toEqual(fixedPartAttributes[index]);
       });
       expect(screen.getByTestId("level-bubble")).toHaveStyle({
         transform: "translate3d(calc(-50% - -45px), calc(-50% - 45px), 18px)",
@@ -61,36 +80,6 @@ describe("Level", () => {
       expect(screen.getByText("60.0°")).toBeInTheDocument();
       expect(screen.getByText("Horizontal: not level")).toBeInTheDocument();
       expect(screen.getByText("Vertical: not level")).toBeInTheDocument();
-    });
-  });
-
-  it("keeps the platform static when reduced motion is requested", async () => {
-    vi.mocked(window.matchMedia).mockImplementation(
-      (query) =>
-        ({
-          matches: query === "(prefers-reduced-motion: reduce)",
-          media: query,
-          onchange: null,
-          addListener: vi.fn(),
-          removeListener: vi.fn(),
-          addEventListener: vi.fn(),
-          removeEventListener: vi.fn(),
-          dispatchEvent: vi.fn(),
-        }) as MediaQueryList,
-    );
-
-    renderLevel();
-    fireEvent.click(screen.getByRole("button", { name: "Level" }));
-    await screen.findByText("3D Bubble Level");
-    dispatchOrientation(20, -20);
-
-    await waitFor(() => {
-      expect(screen.getByTestId("level-platform")).toHaveStyle({
-        transform: "rotateX(0deg) rotateY(0deg)",
-      });
-      expect(screen.getByTestId("level-bubble")).toHaveStyle({
-        transform: "translate3d(calc(-50% - -20px), calc(-50% - 20px), 18px)",
-      });
     });
   });
 });
