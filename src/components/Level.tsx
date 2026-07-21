@@ -10,6 +10,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { Activity } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -18,7 +19,17 @@ interface OrientationData {
   gamma: number; // left-right tilt in degrees (-90 to 90)
 }
 
+const MAX_BUBBLE_TRAVEL = 45;
+const MAX_DISPLAY_ANGLE = 30;
+const DISPLAY_TILT_SCALE = 0.45;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, value));
+
 export const Level = () => {
+  const prefersReducedMotion = useMediaQuery(
+    "(prefers-reduced-motion: reduce)",
+  );
   const [orientation, setOrientation] = useState<OrientationData>({
     beta: 0,
     gamma: 0,
@@ -102,9 +113,24 @@ export const Level = () => {
   const horizontalStatus = getLevelStatus(orientation.gamma);
   const verticalStatus = getLevelStatus(orientation.beta);
 
-  // Calculate bubble positions
-  const bubbleX = Math.max(-45, Math.min(45, orientation.gamma)); // Clamp to -45 to 45
-  const bubbleY = Math.max(-45, Math.min(45, orientation.beta)); // Clamp to -45 to 45
+  const bubbleX = clamp(
+    orientation.gamma,
+    -MAX_BUBBLE_TRAVEL,
+    MAX_BUBBLE_TRAVEL,
+  );
+  const bubbleY = clamp(
+    orientation.beta,
+    -MAX_BUBBLE_TRAVEL,
+    MAX_BUBBLE_TRAVEL,
+  );
+  const displayTiltX = prefersReducedMotion
+    ? 0
+    : clamp(orientation.beta, -MAX_DISPLAY_ANGLE, MAX_DISPLAY_ANGLE) *
+      -DISPLAY_TILT_SCALE;
+  const displayTiltY = prefersReducedMotion
+    ? 0
+    : clamp(orientation.gamma, -MAX_DISPLAY_ANGLE, MAX_DISPLAY_ANGLE) *
+      DISPLAY_TILT_SCALE;
 
   return (
     <>
@@ -163,50 +189,81 @@ export const Level = () => {
             </Badge>
           </SimpleGrid>
 
-          {/* 2D Bubble Level */}
+          {/* 3D Bubble Level */}
           <Card withBorder p="lg">
             <Text size="sm" fw={500} mb="md" ta="center">
-              2D Bubble Level
+              3D Bubble Level
             </Text>
-            <div className="relative mx-auto h-48 w-48">
-              {/* Outer circle */}
-              <div className="absolute inset-0 rounded-full border-4 border-gray-300 bg-gray-100">
-                {/* Center crosshair */}
-                <svg className="absolute inset-0 h-full w-full">
-                  <line
-                    x1="50%"
-                    y1="0"
-                    x2="50%"
-                    y2="100%"
-                    stroke="#9ca3af"
-                    strokeWidth="2"
-                  />
-                  <line
-                    x1="0"
-                    y1="50%"
-                    x2="100%"
-                    y2="50%"
-                    stroke="#9ca3af"
-                    strokeWidth="2"
-                  />
-                  {/* Center target circle */}
-                  <circle
-                    cx="50%"
-                    cy="50%"
-                    r="10"
-                    fill="none"
-                    stroke="#22c55e"
-                    strokeWidth="3"
-                  />
-                </svg>
-                {/* Bubble */}
+            <div
+              className="relative mx-auto h-56 w-56"
+              style={{ perspective: "560px" }}
+            >
+              <div
+                aria-hidden="true"
+                className="absolute right-5 bottom-1 left-5 h-12 rounded-[50%] bg-slate-950/25 blur-md"
+              />
+              <div
+                data-testid="level-platform"
+                className="absolute inset-4 rounded-full border-8 border-slate-500 bg-slate-700 shadow-2xl transition-transform duration-150 ease-out motion-reduce:transition-none"
+                style={{
+                  transform: `rotateX(${displayTiltX}deg) rotateY(${displayTiltY}deg)`,
+                  transformStyle: "preserve-3d",
+                }}
+              >
                 <div
-                  className="absolute size-4 rounded-full bg-blue-500 shadow-lg"
+                  data-testid="level-vessel"
+                  className="absolute inset-1 rounded-full border-2 border-white/70 shadow-inner"
                   style={{
-                    left: `calc(50% - ${bubbleX}px - 8px)`,
-                    top: `calc(50% - ${bubbleY}px - 8px)`,
+                    background:
+                      "radial-gradient(circle at 38% 30%, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.82) 24%, rgba(147,197,253,0.55) 68%, rgba(30,64,175,0.72) 100%)",
+                    transform: "translateZ(5px)",
+                    transformStyle: "preserve-3d",
                   }}
-                />
+                >
+                  <div className="absolute inset-[18%] rounded-full border-2 border-emerald-500/80 bg-emerald-100/10 shadow-[0_0_12px_rgba(34,197,94,0.25)]" />
+                  <svg
+                    aria-hidden="true"
+                    className="absolute inset-0 h-full w-full opacity-70"
+                  >
+                    <line
+                      x1="50%"
+                      y1="8%"
+                      x2="50%"
+                      y2="92%"
+                      stroke="#475569"
+                      strokeWidth="1.5"
+                    />
+                    <line
+                      x1="8%"
+                      y1="50%"
+                      x2="92%"
+                      y2="50%"
+                      stroke="#475569"
+                      strokeWidth="1.5"
+                    />
+                    <circle
+                      cx="50%"
+                      cy="50%"
+                      r="12"
+                      fill="none"
+                      stroke="#16a34a"
+                      strokeWidth="2.5"
+                    />
+                  </svg>
+                  <div
+                    data-testid="level-bubble"
+                    className="absolute top-1/2 left-1/2 size-6 rounded-full border border-sky-200/90 transition-transform duration-150 ease-out motion-reduce:transition-none"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 32% 26%, white 0%, #bae6fd 18%, #38bdf8 48%, #0369a1 100%)",
+                      boxShadow:
+                        "0 8px 12px rgba(15, 23, 42, 0.32), inset -3px -5px 7px rgba(3, 105, 161, 0.42)",
+                      transform: `translate3d(calc(-50% - ${bubbleX}px), calc(-50% - ${bubbleY}px), 18px)`,
+                    }}
+                  >
+                    <span className="absolute top-1 left-1 size-1.5 rounded-full bg-white/90" />
+                  </div>
+                </div>
               </div>
             </div>
           </Card>
