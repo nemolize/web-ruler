@@ -23,6 +23,23 @@ const MAX_BUBBLE_TRAVEL = 45;
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
+const toRadians = (angle: number) => (angle * Math.PI) / 180;
+const toDegrees = (angle: number) => (angle * 180) / Math.PI;
+const stabilizeAngle = (angle: number) =>
+  Math.round(angle * 10_000_000_000) / 10_000_000_000;
+
+const getSurfaceTilt = ({ beta, gamma }: OrientationData) => {
+  const betaRadians = toRadians(beta);
+  const gammaRadians = toRadians(gamma);
+
+  return {
+    frontBack: stabilizeAngle(toDegrees(Math.asin(Math.sin(betaRadians)))),
+    leftRight: stabilizeAngle(
+      toDegrees(Math.asin(Math.cos(betaRadians) * Math.sin(gammaRadians))),
+    ),
+  };
+};
+
 export const Level = () => {
   const [orientation, setOrientation] = useState<OrientationData>({
     beta: 0,
@@ -104,16 +121,17 @@ export const Level = () => {
     }
   };
 
-  const horizontalStatus = getLevelStatus(orientation.gamma);
-  const verticalStatus = getLevelStatus(orientation.beta);
+  const surfaceTilt = getSurfaceTilt(orientation);
+  const leftRightStatus = getLevelStatus(surfaceTilt.leftRight);
+  const frontBackStatus = getLevelStatus(surfaceTilt.frontBack);
 
   const bubbleX = clamp(
-    orientation.gamma,
+    surfaceTilt.leftRight,
     -MAX_BUBBLE_TRAVEL,
     MAX_BUBBLE_TRAVEL,
   );
   const bubbleY = clamp(
-    orientation.beta,
+    surfaceTilt.frontBack,
     -MAX_BUBBLE_TRAVEL,
     MAX_BUBBLE_TRAVEL,
   );
@@ -157,101 +175,84 @@ export const Level = () => {
           {/* Status Badges */}
           <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="md">
             <Badge
-              color={horizontalStatus.color}
+              color={leftRightStatus.color}
               size="lg"
               variant="filled"
               fullWidth
             >
-              Horizontal: {horizontalStatus.status}
+              Left/Right: {leftRightStatus.status}
             </Badge>
             <Badge
-              color={verticalStatus.color}
+              color={frontBackStatus.color}
               size="lg"
               variant="filled"
               fullWidth
             >
-              Vertical: {verticalStatus.status}
+              Front/Back: {frontBackStatus.status}
             </Badge>
           </SimpleGrid>
 
-          {/* 3D Bubble Level */}
+          {/* 2D Bubble Level */}
           <Card withBorder p="lg">
             <Text size="sm" fw={500} mb="md" ta="center">
-              3D Bubble Level
+              2D Bubble Level
             </Text>
             <div
-              className="relative mx-auto h-56 w-56"
-              style={{ perspective: "560px" }}
+              data-testid="level-instrument"
+              className="relative mx-auto size-48"
             >
               <div
-                aria-hidden="true"
-                data-testid="level-shadow"
-                className="absolute right-5 bottom-1 left-5 h-12 rounded-[50%] bg-slate-950/25 blur-md"
-              />
-              <div
                 data-testid="level-platform"
-                className="absolute inset-4 rounded-full border-8 border-slate-500 bg-slate-700 shadow-2xl"
+                className="absolute inset-0 overflow-hidden rounded-full border-4 border-slate-400 bg-sky-50 shadow-inner"
                 style={{
-                  transformStyle: "preserve-3d",
+                  boxShadow:
+                    "inset 0 6px 14px rgba(15, 23, 42, 0.12), 0 4px 10px rgba(15, 23, 42, 0.12)",
                 }}
               >
+                <svg
+                  aria-hidden="true"
+                  data-testid="level-grid"
+                  className="absolute inset-0 h-full w-full opacity-70"
+                >
+                  <line
+                    x1="50%"
+                    y1="6%"
+                    x2="50%"
+                    y2="94%"
+                    stroke="#64748b"
+                    strokeWidth="1.5"
+                  />
+                  <line
+                    x1="6%"
+                    y1="50%"
+                    x2="94%"
+                    y2="50%"
+                    stroke="#64748b"
+                    strokeWidth="1.5"
+                  />
+                  <circle
+                    cx="50%"
+                    cy="50%"
+                    r="18"
+                    fill="none"
+                    stroke="#16a34a"
+                    strokeWidth="2.5"
+                  />
+                </svg>
                 <div
-                  data-testid="level-vessel"
-                  className="absolute inset-1 rounded-full border-2 border-white/70 shadow-inner"
+                  data-testid="level-bubble"
+                  data-offset-x={bubbleX}
+                  data-offset-y={bubbleY}
+                  className="absolute top-1/2 left-1/2 size-6 rounded-full border border-sky-200/90 transition-transform duration-150 ease-out motion-reduce:transition-none"
                   style={{
                     background:
-                      "radial-gradient(circle at 38% 30%, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.82) 24%, rgba(147,197,253,0.55) 68%, rgba(30,64,175,0.72) 100%)",
-                    transform: "translateZ(5px)",
-                    transformStyle: "preserve-3d",
+                      "radial-gradient(circle at 32% 26%, white 0%, #bae6fd 18%, #38bdf8 48%, #0369a1 100%)",
+                    boxShadow:
+                      "0 4px 8px rgba(15, 23, 42, 0.3), inset -3px -5px 7px rgba(3, 105, 161, 0.42)",
+                    transform: `translate(calc(-50% - ${bubbleX}px), calc(-50% - ${bubbleY}px))`,
                   }}
                 >
-                  <div
-                    data-testid="level-target"
-                    className="absolute inset-[18%] rounded-full border-2 border-emerald-500/80 bg-emerald-100/10 shadow-[0_0_12px_rgba(34,197,94,0.25)]"
-                  />
-                  <svg
-                    aria-hidden="true"
-                    data-testid="level-grid"
-                    className="absolute inset-0 h-full w-full opacity-70"
-                  >
-                    <line
-                      x1="50%"
-                      y1="8%"
-                      x2="50%"
-                      y2="92%"
-                      stroke="#475569"
-                      strokeWidth="1.5"
-                    />
-                    <line
-                      x1="8%"
-                      y1="50%"
-                      x2="92%"
-                      y2="50%"
-                      stroke="#475569"
-                      strokeWidth="1.5"
-                    />
-                    <circle
-                      cx="50%"
-                      cy="50%"
-                      r="12"
-                      fill="none"
-                      stroke="#16a34a"
-                      strokeWidth="2.5"
-                    />
-                  </svg>
-                  <div
-                    data-testid="level-bubble"
-                    className="absolute top-1/2 left-1/2 size-6 rounded-full border border-sky-200/90 transition-transform duration-150 ease-out motion-reduce:transition-none"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 32% 26%, white 0%, #bae6fd 18%, #38bdf8 48%, #0369a1 100%)",
-                      boxShadow:
-                        "0 8px 12px rgba(15, 23, 42, 0.32), inset -3px -5px 7px rgba(3, 105, 161, 0.42)",
-                      transform: `translate3d(calc(-50% - ${bubbleX}px), calc(-50% - ${bubbleY}px), 18px)`,
-                    }}
-                  >
-                    <span className="absolute top-1 left-1 size-1.5 rounded-full bg-white/90" />
-                  </div>
+                  <span className="absolute top-1 left-1 size-1.5 rounded-full bg-white/90" />
                 </div>
               </div>
             </div>
@@ -263,16 +264,16 @@ export const Level = () => {
               <Text size="xs" c="dimmed">
                 Left/Right Tilt
               </Text>
-              <Text size="xl" fw={700} c={horizontalStatus.color}>
-                {orientation.gamma.toFixed(1)}°
+              <Text size="xl" fw={700} c={leftRightStatus.color}>
+                {surfaceTilt.leftRight.toFixed(1)}°
               </Text>
             </Card>
             <Card withBorder p="md">
               <Text size="xs" c="dimmed">
                 Front/Back Tilt
               </Text>
-              <Text size="xl" fw={700} c={verticalStatus.color}>
-                {orientation.beta.toFixed(1)}°
+              <Text size="xl" fw={700} c={frontBackStatus.color}>
+                {surfaceTilt.frontBack.toFixed(1)}°
               </Text>
             </Card>
           </div>
