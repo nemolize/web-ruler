@@ -18,6 +18,28 @@ interface OrientationData {
   gamma: number; // left-right tilt in degrees (-90 to 90)
 }
 
+const MAX_BUBBLE_TRAVEL = 45;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, value));
+
+const toRadians = (angle: number) => (angle * Math.PI) / 180;
+const toDegrees = (angle: number) => (angle * 180) / Math.PI;
+const stabilizeAngle = (angle: number) =>
+  Math.round(angle * 10_000_000_000) / 10_000_000_000;
+
+const getSurfaceTilt = ({ beta, gamma }: OrientationData) => {
+  const betaRadians = toRadians(beta);
+  const gammaRadians = toRadians(gamma);
+
+  return {
+    frontBack: stabilizeAngle(toDegrees(Math.asin(Math.sin(betaRadians)))),
+    leftRight: stabilizeAngle(
+      toDegrees(Math.asin(Math.cos(betaRadians) * Math.sin(gammaRadians))),
+    ),
+  };
+};
+
 export const Level = () => {
   const [orientation, setOrientation] = useState<OrientationData>({
     beta: 0,
@@ -99,13 +121,20 @@ export const Level = () => {
     }
   };
 
-  const horizontalStatus = getLevelStatus(orientation.gamma);
-  const verticalStatus = getLevelStatus(orientation.beta);
+  const surfaceTilt = getSurfaceTilt(orientation);
+  const leftRightStatus = getLevelStatus(surfaceTilt.leftRight);
+  const frontBackStatus = getLevelStatus(surfaceTilt.frontBack);
 
-  // Calculate bubble positions
-  const bubbleX = Math.max(-45, Math.min(45, orientation.gamma)); // Clamp to -45 to 45
-  const bubbleY = Math.max(-45, Math.min(45, orientation.beta)); // Clamp to -45 to 45
-
+  const bubbleX = clamp(
+    surfaceTilt.leftRight,
+    -MAX_BUBBLE_TRAVEL,
+    MAX_BUBBLE_TRAVEL,
+  );
+  const bubbleY = clamp(
+    surfaceTilt.frontBack,
+    -MAX_BUBBLE_TRAVEL,
+    MAX_BUBBLE_TRAVEL,
+  );
   return (
     <>
       {/* Floating Level Button */}
@@ -146,20 +175,20 @@ export const Level = () => {
           {/* Status Badges */}
           <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="md">
             <Badge
-              color={horizontalStatus.color}
+              color={leftRightStatus.color}
               size="lg"
               variant="filled"
               fullWidth
             >
-              Horizontal: {horizontalStatus.status}
+              Left/Right: {leftRightStatus.status}
             </Badge>
             <Badge
-              color={verticalStatus.color}
+              color={frontBackStatus.color}
               size="lg"
               variant="filled"
               fullWidth
             >
-              Vertical: {verticalStatus.status}
+              Front/Back: {frontBackStatus.status}
             </Badge>
           </SimpleGrid>
 
@@ -168,45 +197,63 @@ export const Level = () => {
             <Text size="sm" fw={500} mb="md" ta="center">
               2D Bubble Level
             </Text>
-            <div className="relative mx-auto h-48 w-48">
-              {/* Outer circle */}
-              <div className="absolute inset-0 rounded-full border-4 border-gray-300 bg-gray-100">
-                {/* Center crosshair */}
-                <svg className="absolute inset-0 h-full w-full">
+            <div
+              data-testid="level-instrument"
+              className="relative mx-auto size-48"
+            >
+              <div
+                data-testid="level-platform"
+                className="absolute inset-0 overflow-hidden rounded-full border-4 border-slate-400 bg-sky-50 shadow-inner"
+                style={{
+                  boxShadow:
+                    "inset 0 6px 14px rgba(15, 23, 42, 0.12), 0 4px 10px rgba(15, 23, 42, 0.12)",
+                }}
+              >
+                <svg
+                  aria-hidden="true"
+                  data-testid="level-grid"
+                  className="absolute inset-0 h-full w-full opacity-70"
+                >
                   <line
                     x1="50%"
-                    y1="0"
+                    y1="6%"
                     x2="50%"
-                    y2="100%"
-                    stroke="#9ca3af"
-                    strokeWidth="2"
+                    y2="94%"
+                    stroke="#64748b"
+                    strokeWidth="1.5"
                   />
                   <line
-                    x1="0"
+                    x1="6%"
                     y1="50%"
-                    x2="100%"
+                    x2="94%"
                     y2="50%"
-                    stroke="#9ca3af"
-                    strokeWidth="2"
+                    stroke="#64748b"
+                    strokeWidth="1.5"
                   />
-                  {/* Center target circle */}
                   <circle
                     cx="50%"
                     cy="50%"
-                    r="10"
+                    r="18"
                     fill="none"
-                    stroke="#22c55e"
-                    strokeWidth="3"
+                    stroke="#16a34a"
+                    strokeWidth="2.5"
                   />
                 </svg>
-                {/* Bubble */}
                 <div
-                  className="absolute size-4 rounded-full bg-blue-500 shadow-lg"
+                  data-testid="level-bubble"
+                  data-offset-x={bubbleX}
+                  data-offset-y={bubbleY}
+                  className="absolute top-1/2 left-1/2 size-6 rounded-full border border-sky-200/90 transition-transform duration-150 ease-out motion-reduce:transition-none"
                   style={{
-                    left: `calc(50% - ${bubbleX}px - 8px)`,
-                    top: `calc(50% - ${bubbleY}px - 8px)`,
+                    background:
+                      "radial-gradient(circle at 32% 26%, white 0%, #bae6fd 18%, #38bdf8 48%, #0369a1 100%)",
+                    boxShadow:
+                      "0 4px 8px rgba(15, 23, 42, 0.3), inset -3px -5px 7px rgba(3, 105, 161, 0.42)",
+                    transform: `translate(calc(-50% - ${bubbleX}px), calc(-50% - ${bubbleY}px))`,
                   }}
-                />
+                >
+                  <span className="absolute top-1 left-1 size-1.5 rounded-full bg-white/90" />
+                </div>
               </div>
             </div>
           </Card>
@@ -217,16 +264,16 @@ export const Level = () => {
               <Text size="xs" c="dimmed">
                 Left/Right Tilt
               </Text>
-              <Text size="xl" fw={700} c={horizontalStatus.color}>
-                {orientation.gamma.toFixed(1)}°
+              <Text size="xl" fw={700} c={leftRightStatus.color}>
+                {surfaceTilt.leftRight.toFixed(1)}°
               </Text>
             </Card>
             <Card withBorder p="md">
               <Text size="xs" c="dimmed">
                 Front/Back Tilt
               </Text>
-              <Text size="xl" fw={700} c={verticalStatus.color}>
-                {orientation.beta.toFixed(1)}°
+              <Text size="xl" fw={700} c={frontBackStatus.color}>
+                {surfaceTilt.frontBack.toFixed(1)}°
               </Text>
             </Card>
           </div>
