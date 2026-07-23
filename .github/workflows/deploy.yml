@@ -23,7 +23,7 @@ jobs:
         with:
           message: "Version Preview URL: ⏳deployment is in progress..."
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
 
       - name: Restore build cache
