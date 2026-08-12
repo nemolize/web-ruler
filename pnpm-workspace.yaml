@@ -1,7 +1,7 @@
-onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - esbuild
-  - lefthook
-  - sharp
-  - unrs-resolver
-  - workerd
+allowBuilds:
+  '@tailwindcss/oxide': true
+  esbuild: true
+  lefthook: true
+  sharp: true
+  unrs-resolver: true
+  workerd: true

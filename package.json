@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbo -p ${PLAYWRIGHT_PORT:-3000}",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "next start",
     "lint": "run-p --continue-on-error 'lint:*'",
