@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+import { localServerURL } from "./port";
+
 export default defineConfig({
   testDir: "./e2e-tests",
   fullyParallel: true,
@@ -8,7 +10,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "list",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: localServerURL,
     trace: "on-first-retry",
   },
   projects: [
@@ -19,7 +21,9 @@ export default defineConfig({
   ],
   webServer: {
     command: "pnpm dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
+    url: localServerURL,
+    // Reusing a server this run did not start would test whatever already
+    // holds the port, which is the failure the override exists to avoid.
+    reuseExistingServer: false,
   },
 });
