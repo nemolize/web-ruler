@@ -30,7 +30,7 @@ jobs:
           message: "Version Preview URL: ⏳deployment is in progress..."
 
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/setup
+      - uses: nemolize/actions/setup@ffbe3737f01cb4e563dd19424761da8c3c9a9173 # v1.2.0
 
       - name: Restore build cache
         uses: actions/cache@v4
