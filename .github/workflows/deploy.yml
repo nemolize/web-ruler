@@ -45,6 +45,11 @@ jobs:
 
       - uses: nemolize/set-wrangler-name@v1
       - run: pnpm exec opennextjs-cloudflare build
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Unset, OpenNext resolves the account via /memberships — a user-level
+          # endpoint an account token cannot call, so the build fails there.
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - id: deploy
         name: Deploy
@@ -54,6 +59,7 @@ jobs:
           echo "preview_line=$(echo "$OUTPUT" | grep "Version Preview URL:")" >> $GITHUB_OUTPUT
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Add preview URL comment
         if: github.event_name == 'pull_request'
