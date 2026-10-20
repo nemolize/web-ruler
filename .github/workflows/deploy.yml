@@ -29,11 +29,11 @@ jobs:
         with:
           message: "Version Preview URL: ⏳deployment is in progress..."
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: nemolize/actions/setup@ffbe3737f01cb4e563dd19424761da8c3c9a9173 # v1.2.0
 
       - name: Restore build cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.npm
@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
             ${{ runner.os }}-nextjs-
 
-      - uses: nemolize/set-wrangler-name@v1
+      - uses: nemolize/set-wrangler-name@3630486c8e8402077ed7a3cb45c3576732777048 # v1
       - run: pnpm exec opennextjs-cloudflare build
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
