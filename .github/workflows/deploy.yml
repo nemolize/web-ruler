@@ -19,15 +19,17 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    # `pull-requests: write` is needed only by the sticky-comment steps, which
+    # `pull-requests: write` is needed only by the PR-description steps, which
     # are themselves gated on `github.event_name == 'pull_request'`.
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - if: ${{ github.event_name == 'pull_request' }}
+        uses: nemolize/actions/upsert@5d31663b9013a671ff8fe8b84900a88b9878f0c1 # v1.5.0
         with:
-          message: "Version Preview URL: ⏳deployment is in progress..."
+          marker: preview-url
+          body: "Version Preview URL: ⏳deployment is in progress..."
 
       - uses: actions/checkout@v6
       - uses: nemolize/actions/setup@ffbe3737f01cb4e563dd19424761da8c3c9a9173 # v1.2.0
@@ -61,8 +63,9 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      - name: Add preview URL comment
-        if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
+      - if: ${{ github.event_name == 'pull_request' }}
+        name: Show preview URL in the PR description
+        uses: nemolize/actions/upsert@5d31663b9013a671ff8fe8b84900a88b9878f0c1 # v1.5.0
         with:
-          message: ${{ steps.deploy.outputs.preview_line }}
+          marker: preview-url
+          body: ${{ steps.deploy.outputs.preview_line }}
